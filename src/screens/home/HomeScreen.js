@@ -36,15 +36,19 @@ const HomeScreen = () => {
     useEffect(() => {
         const activeListLength = allTaskList.filter((item) => item.status == "active").length;
         const completedListLength = allTaskList.filter((item) => item.status == "completed").length;
-        if (allTaskList.length == completedListLength) {
-            setBgColor(Colors.GREEN);
-        } else if (allTaskList.length == activeListLength) {
-            setBgColor(Colors.RED);
-        } else if (completedListLength >= 1) {
-            setBgColor(Colors.YELLOW);
+        if (allTaskList.length != 0) {
+            if (allTaskList.length == completedListLength) {
+                setBgColor(Colors.GREEN);
+            } else if (allTaskList.length == activeListLength) {
+                setBgColor(Colors.RED);
+            } else if (completedListLength >= 1) {
+                setBgColor(Colors.YELLOW);
+            } else {
+                setBgColor(Colors.PRIMARY);
+            };
         } else {
             setBgColor(Colors.PRIMARY);
-        };
+        }
     }, [allTaskList]);
 
     const getAllTaskList = () => {
@@ -60,9 +64,10 @@ const HomeScreen = () => {
     const updateTask = async (params) => {
         try {
             const response = await axiosClient.put(ApiConstants.CREATE_OR_GET_OR_UPDATE_TASK, params);
-            if (response.status == 201) {
+            if (response.status == 200) {
                 AppAlert(AppStrings.SUCCESS, AppStrings.TASK_UPDATED_MSG);
-                getAllTaskList()
+                setSelectedIndex(null);
+                getAllTaskList();
             } else {
                 if (response.status != 500 && response.data?.message) {
                     AppAlert(AppStrings.ERROR, response.data?.message);
@@ -90,7 +95,7 @@ const HomeScreen = () => {
 
     const ListHeaderComponent = () => {
         return (
-            <>
+            <View style={{ marginHorizontal: wp(5) }}>
                 <CustomButton
                     isPrimary={false}
                     btnText={AppStrings.CREATE}
@@ -146,7 +151,7 @@ const HomeScreen = () => {
                         </View>
                     </View>
                 }
-            </>
+            </View>
         );
     };
 
@@ -181,7 +186,7 @@ const HomeScreen = () => {
                 <Text style={[styles.timeText, {
                     color: item.status == "active" ? Colors.SECONDARY_TEXT : Colors.GREY_TEXT
                 }]}>{item?.expiry_date}</Text>
-                {index == selectedIndex ?
+                {index == selectedIndex && item?.status != "completed" ?
                     <View style={[GlobalStyles.rowCenterView, { marginTop: hp(1), justifyContent: 'space-around' }]}>
                         <TouchableOpacity
                             onPress={() => setSelectedIndex(null)}
@@ -209,7 +214,6 @@ const HomeScreen = () => {
                 <FlatList
                     data={allTaskList}
                     renderItem={renderItem}
-                    style={{ paddingHorizontal: wp(5) }}
                     showsVerticalScrollIndicator={false}
                     ListHeaderComponent={ListHeaderComponent}
                     ItemSeparatorComponent={ItemSeparatorComponent}
@@ -252,7 +256,8 @@ const styles = StyleSheet.create({
     },
     listItemView: {
         padding: wp(5),
-        borderRadius: wp(10)
+        borderRadius: wp(10),
+        marginHorizontal: wp(5)
     },
     listItemSubView: {
         flex: 1
