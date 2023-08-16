@@ -3,13 +3,13 @@ import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { ScreenNames } from '../../utils/Constant';
 import { AppStrings } from '../../utils/AppStrings';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import CustomButton from '../../components/CustomButton';
+import { createUser } from '../../redux/slices/AuthSlice';
 import CustomTextInput from '../../components/CustomTextInput';
 import GradientWrapperView from '../../components/GradientWrapperView';
 import TermsAndConditionsText from '../../components/TermsAndConditionsText';
-import { useDispatch, useSelector } from 'react-redux';
-import { createUser } from '../../redux/slices/AuthSlice';
 
 const NameSchema = yup.object().shape({
     name: yup.string().trim()
@@ -69,4 +69,4 @@ const NameScreen = () => {
     )
 }
 
-export default NameScreen
+export default NameScreen;

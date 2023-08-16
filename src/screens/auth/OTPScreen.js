@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
 import * as yup from 'yup';
+import { useFormik } from 'formik';
 import { ScreenNames } from '../../utils/Constant';
 import { AppStrings } from '../../utils/AppStrings';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import CustomButton from '../../components/CustomButton';
 import CustomTextInput from '../../components/CustomTextInput';
+import { getUser, verifyOTP } from '../../redux/slices/AuthSlice';
 import GradientWrapperView from '../../components/GradientWrapperView';
 import TermsAndConditionsText from '../../components/TermsAndConditionsText';
-import { useFormik } from 'formik';
-import { useDispatch, useSelector } from 'react-redux';
-import { getUser, verifyOTP } from '../../redux/slices/AuthSlice';
 
 const OtpVerificationSchema = yup.object().shape({
     otp: yup.string().trim()

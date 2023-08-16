@@ -16,13 +16,6 @@ const AsyncKey = {
     ROOT_REDUCER: "ROOT_REDUCER"
 };
 
-const IconList = [
-    { icon: ImagePaths.BOLD_ICON },
-    { icon: ImagePaths.ITALIC_ICON },
-    { icon: ImagePaths.UNDERLINE_ICON },
-    { icon: ImagePaths.MORE_ICON }
-];
-
 const BottomIconList = [
     {
         id: 1,
@@ -41,4 +34,4 @@ const BottomIconList = [
     },
 ];
 
-export { ScreenNames, AsyncKey, IconList, BottomIconList };
+export { ScreenNames, AsyncKey, BottomIconList };

@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import { Colors } from "./Colors";
 import { FontSizes } from "./FontSizes";
 import { Fonts } from "./Fonts";
@@ -34,8 +34,8 @@ export const GlobalStyles = StyleSheet.create({
         elevation: 5,
         shadowRadius: 5,
         shadowOpacity: 1,
-        shadowColor: Colors.SHADOW,
         backgroundColor: Colors.PRIMARY_BG,
-        shadowOffset: { width: 0, height: 0.5 }
+        shadowOffset: { width: 0, height: 0.5 },
+        shadowColor: Platform.OS == "ios" ? Colors.SHADOW : Colors.BLACK,
     }
 });

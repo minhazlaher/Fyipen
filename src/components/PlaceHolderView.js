@@ -4,7 +4,7 @@ import { Colors } from '../styles/Colors';
 import { FontSizes } from '../styles/FontSizes';
 import { AppStrings } from '../utils/AppStrings';
 import { ImagePaths } from '../utils/ImagePaths';
-import { StyleSheet, Text, View, Image } from 'react-native'
+import { StyleSheet, Text, View, Image } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 const PlaceHolderView = ({ ...props }) => {

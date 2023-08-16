@@ -1,5 +1,7 @@
+import moment from "moment";
+
 const formatDate = (date) => {
-    return date.toISOString().replace('T', ' ').slice(0, 19)
+    return moment(date).format("YYYY-MM-DD HH:mm:ss");
 }
 
-export { formatDate }
+export { formatDate };

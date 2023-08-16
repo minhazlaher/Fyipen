@@ -2,7 +2,7 @@ import { axiosClient } from "../../config/Axios";
 import { AppStrings } from "../../utils/AppStrings";
 import { AppAlert } from "../../components/AppAlert";
 import { ApiConstants } from "../../config/ApiConstants";
-import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const TASK = "TASK";
 

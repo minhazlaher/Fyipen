@@ -1,9 +1,9 @@
-import { StyleSheet, Text, TextInput, View, TextInputProps } from 'react-native'
-import React from 'react'
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { Colors } from '../styles/Colors';
+import React from 'react';
 import { Fonts } from '../styles/Fonts';
+import { Colors } from '../styles/Colors';
 import { FontSizes } from '../styles/FontSizes';
+import { StyleSheet, Text, TextInput } from 'react-native';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 const CustomTextInput = ({ title, error, ...props }) => {
     return (

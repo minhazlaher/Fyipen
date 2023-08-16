@@ -16,6 +16,7 @@ import { useNavigation } from '@react-navigation/native';
 import QuillEditor, { QuillToolbar } from 'react-native-cn-quill';
 import { BottomIconList, ScreenNames } from '../../utils/Constant';
 import GradientWrapperView from '../../components/GradientWrapperView';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Image, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
@@ -88,7 +89,7 @@ const CreateTaskScreen = () => {
                             name: title,
                             details: details,
                             category: isWork ? "work" : "personal",
-                            expiry_date: date
+                            expiry_date: formatDate(date)
                         };
                         createNewTask(params);
                     } else {
@@ -107,101 +108,89 @@ const CreateTaskScreen = () => {
 
     return (
         <GradientWrapperView>
-            <CustomHeader title={AppStrings.NEW_TASK} />
-            <View style={[GlobalStyles.container, { justifyContent: 'space-evenly' }]}>
-                <TextInput
-                    value={title}
-                    placeholder={AppStrings.TITLE}
-                    onChangeText={(text) => setTitle(text)}
-                    style={[styles.titleTextInput, GlobalStyles.shadowView]}>
-                </TextInput>
+            <KeyboardAwareScrollView enableOnAndroid contentContainerStyle={{ flex: 1 }}>
+                <CustomHeader title={AppStrings.NEW_TASK} />
+                <View style={[GlobalStyles.container, { justifyContent: 'space-evenly' }]}>
+                    <TextInput
+                        value={title}
+                        placeholder={AppStrings.TITLE}
+                        onChangeText={(text) => setTitle(text)}
+                        style={[styles.titleTextInput, GlobalStyles.shadowView]}>
+                    </TextInput>
 
-                <View style={[{
-                    zIndex: 1,
-                    padding: wp(3),
-                    alignSelf: 'center',
-                    borderRadius: wp(10),
-                    marginBottom: wp(-15),
-                    backgroundColor: Colors.PRIMARY_BG,
-                }, GlobalStyles.shadowView]}>
-                    <QuillToolbar
-                        editor={editorRef}
-                        theme="light"
-                        options={[
-                            ['bold', 'italic', 'underline', { 'list': 'bullet' }]
-                        ]}
-                        styles={{
-                            toolbar: {
-                                provider: (provided) => ({
-                                    // ...provided,
-                                    backgroundColor: Colors.PRIMARY_BG
-                                }),
-                                root: (provided) => ({
-                                    // ...provided,
-                                    backgroundColor: Colors.PRIMARY_BG
-                                }),
-                            },
-                            // separator: (provided) => ({
-                            //     ...provided,
-                            //     color: Colors.PRIMARY_BG,
-                            //     backgroundColor: Colors.PRIMARY_BG
-                            // }),
+                    <View style={[styles.toolbarView, GlobalStyles.shadowView]}>
+                        <QuillToolbar
+                            editor={editorRef}
+                            theme="light"
+                            options={[
+                                ['bold', 'italic', 'underline', { 'list': 'bullet' }]
+                            ]}
+                            styles={{
+                                toolbar: {
+                                    provider: (provided) => ({
+                                        // ...provided,
+                                        backgroundColor: Colors.PRIMARY_BG
+                                    }),
+                                    root: (provided) => ({
+                                        // ...provided,
+                                        backgroundColor: Colors.PRIMARY_BG
+                                    }),
+                                },
+                                // separator: (provided) => ({
+                                //     ...provided,
+                                //     color: Colors.PRIMARY_BG,
+                                //     backgroundColor: Colors.PRIMARY_BG
+                                // }),
+                            }}
+                        />
+                    </View>
+                    <View style={[styles.editorContainer, GlobalStyles.shadowView]}>
+                        <QuillEditor
+                            container
+                            ref={editorRef}
+                            style={styles.editorView}
+                            onHtmlChange={(details) => setDetails(details.html)}
+                        />
+                    </View>
+                    <View style={[styles.iconView, styles.bottomIconView, GlobalStyles.shadowView]}>
+                        {BottomIconList.map((item) => {
+                            return (
+                                <IconImage
+                                    id={item.id}
+                                    icon={
+                                        item.id == 1 && date ? item.selectedIcon
+                                            : item.id == 2 && isWork ? item.selectedIcon
+                                                : item.id == 3 && isPersonal ? item.selectedIcon
+                                                    : item.icon
+                                    }
+                                />
+                            )
+                        })}
+                    </View>
+                    <DatePicker
+                        modal
+                        locale="en_GB"
+                        is24hourSource="locale"
+                        open={openDateModal}
+                        androidVariant="iosClone"
+                        minimumDate={new Date()}
+                        date={date ? new Date(date) : new Date()}
+                        onConfirm={(date) => {
+                            setDate(date);
+                            setOpenDateModal(false);
+                        }}
+                        onCancel={() => {
+                            setOpenDateModal(false);
                         }}
                     />
-                </View>
-                <View style={[{
-                    width: wp(90),
-                    height: hp(35),
-                    padding: wp(10),
-                    borderRadius: wp(10),
-                }, GlobalStyles.shadowView]}>
-                    <QuillEditor
-                        container
-                        ref={editorRef}
-                        style={{
-                            width: '100%',
-                            height: '100%',
-                        }}
-                        onHtmlChange={(details) => setDetails(details.html)}
+                    <CustomButton
+                        isPrimary={false}
+                        btnText={AppStrings.CREATE}
+                        style={styles.createBtn}
+                        onPress={onCreate}
                     />
                 </View>
-                <View style={[styles.iconView, styles.bottomIconView, GlobalStyles.shadowView]}>
-                    {BottomIconList.map((item) => {
-                        return (
-                            <IconImage
-                                id={item.id}
-                                icon={
-                                    item.id == 1 && date ? item.selectedIcon
-                                        : item.id == 2 && isWork ? item.selectedIcon
-                                            : item.id == 3 && isPersonal ? item.selectedIcon
-                                                : item.icon
-                                }
-                            />
-                        )
-                    })}
-                </View>
-                <DatePicker
-                    modal
-                    locale="_GB"
-                    open={openDateModal}
-                    minimumDate={new Date()}
-                    date={date ? new Date(date) : new Date()}
-                    onConfirm={(date) => {
-                        const formattedDate = formatDate(date);
-                        setDate(formattedDate);
-                        setOpenDateModal(false);
-                    }}
-                    onCancel={() => {
-                        setOpenDateModal(false);
-                    }}
-                />
-                <CustomButton
-                    isPrimary={false}
-                    btnText={AppStrings.CREATE}
-                    style={{ marginHorizontal: wp(12) }}
-                    onPress={onCreate}
-                />
-            </View>
+            </KeyboardAwareScrollView>
         </GradientWrapperView>
     );
 };
@@ -232,31 +221,25 @@ const styles = StyleSheet.create({
         width: wp(10),
         height: wp(10),
     },
-    detailsView: {
-        padding: wp(15),
-        borderRadius: wp(10)
+    toolbarView: {
+        zIndex: 1,
+        padding: wp(3),
+        alignSelf: 'center',
+        borderRadius: wp(10),
+        marginBottom: wp(-15),
+        backgroundColor: Colors.PRIMARY_BG,
     },
-    detailsText: {
-        color: Colors.GREY_TEXT_2,
-        fontSize: FontSizes.FONT_SIZE_18,
-        fontFamily: Fonts.FONT_POP_SEMI_BOLD
+    editorContainer: {
+        width: wp(90),
+        height: hp(35),
+        padding: wp(10),
+        borderRadius: wp(10),
     },
-    dotView: {
-        width: wp(2.5),
-        height: wp(2.5),
-        borderRadius: wp(3),
-        marginRight: wp(2),
-        backgroundColor: Colors.GREY_TEXT_2
+    editorView: {
+        width: '100%',
+        height: '100%',
     },
-    boldText: {
-        fontFamily: FontSizes.FONT_POP_BOLD
-    },
-    italicText: {
-        fontStyle: 'italic',
-        color: Colors.GREY_TEXT_2,
-        fontSize: FontSizes.FONT_SIZE_18
-    },
-    underlineText: {
-        textDecorationLine: 'underline'
-    },
+    createBtn: {
+        marginHorizontal: wp(12)
+    }
 });

@@ -23,9 +23,8 @@ const styles = StyleSheet.create({
     containerView: {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingVertical: wp(2),
+        paddingVertical: hp(3),
         paddingHorizontal: wp(5),
-        marginBottom: hp(2)
     },
     title: {
         flex: 1,

@@ -1,20 +1,19 @@
 import React from 'react';
-import { ImageBackground, StyleSheet, Text } from 'react-native';
 import { Colors } from '../styles/Colors';
-import LinearGradient from 'react-native-linear-gradient';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { ImagePaths } from '../utils/ImagePaths';
-import { GlobalStyles } from '../styles/GlobalStyles';
-import { AppStrings } from '../utils/AppStrings';
 import CustomLoader from './CustomLoader';
+import { ImagePaths } from '../utils/ImagePaths';
+import { AppStrings } from '../utils/AppStrings';
+import { GlobalStyles } from '../styles/GlobalStyles';
+import LinearGradient from 'react-native-linear-gradient';
+import { ImageBackground, StyleSheet, Text } from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const GradientWrapperView = ({ children, bgColor, style, isReverse, isAuth, isShowLoader }) => {
-
     return (
         <LinearGradient
             style={[
                 styles.container,
-                isAuth ? { justifyContent: 'flex-end' } : {},
+                isAuth ? styles.authContainer : {},
                 style]
             }
             colors={isReverse ?
@@ -44,6 +43,9 @@ export default GradientWrapperView;
 const styles = StyleSheet.create({
     container: {
         flex: 1
+    },
+    authContainer: {
+        justifyContent: 'flex-end'
     },
     backgroundImage: {
         height: hp(80),

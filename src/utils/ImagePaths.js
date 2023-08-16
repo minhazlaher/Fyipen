@@ -5,10 +5,6 @@ export const ImagePaths = {
     NEXT_BUTTON_IMAGE: require('../assets/images/NextButton.png'),
     PLACE_HOLDER_IMAGE: require('../assets/images/PlaceHolder.png'),
 
-    BOLD_ICON: require('../assets/icons/Bold.png'),
-    ITALIC_ICON: require('../assets/icons/Italic.png'),
-    UNDERLINE_ICON: require('../assets/icons/Underline.png'),
-    MORE_ICON: require('../assets/icons/More.png'),
     TIMER_ICON: require('../assets/icons/Timer.png'),
     SUITCASE_ICON: require('../assets/icons/Suitcase.png'),
     PERSON_ICON: require('../assets/icons/Person.png'),
